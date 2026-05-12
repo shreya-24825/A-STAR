@@ -1,12 +1,10 @@
 <h1>ExpNo 4 : Implement A* search algorithm for a Graph</h1> 
-<h3>Name:       </h3>
-<h3>Register Number:           </h3>
+<h3>Name: SHREYA R    </h3>
+<h3>Register Number:  212224060248         </h3>
 <H3>Aim:</H3>
 <p>To ImplementA * Search algorithm for a Graph using Python 3.</p>
 <H3>Algorithm:</H3>
 
-``````
-// A* Search Algorithm
 1.  Initialize the open list
 2.  Initialize the closed list
     put the starting node on the open 
@@ -22,8 +20,7 @@
        parents to q
    
     d) for each successor
-        i) if successor is the goal, stop search
-        
+        i) if successor is the goal, stop search 
         ii) else, compute both g and h for successor
           successor.g = q.g + distance between 
                               successor and q
@@ -32,13 +29,10 @@
           ways, we will discuss three heuristics- 
           Manhattan, Diagonal and Euclidean 
           Heuristics)
-          
           successor.f = successor.g + successor.h
-
         iii) if a node with the same position as 
             successor is in the OPEN list which has a 
            lower f than successor, skip this successor
-
         iV) if a node with the same position as 
             successor  is in the CLOSED list which has
             a lower f than successor, skip this successor
@@ -48,7 +42,46 @@
     e) push q on the closed list
     end (while loop)
 
-``````
+## PROGRAM
+```
+import heapq
+def astar(graph, h, start, goal):
+    open_list = [(h[start], 0, start, None)]  # (f, g, node, parent)
+    closed = {}
+    parent = {}
+    while open_list:
+        f, g, node, par = heapq.heappop(open_list)
+        if node in closed and closed[node] <= g:
+            continue
+        parent[node] = par
+        closed[node] = g
+
+        if node == goal:
+            path = []
+            while node:
+                path.append(node)
+                node = parent[node]
+            return path[::-1]
+        for nei, cost in graph.get(node, []):
+            new_g = g + cost
+            new_f = new_g + h[nei]
+            heapq.heappush(open_list, (new_f, new_g, nei, node))
+
+n, e = map(int, input().split())
+graph = {}
+for _ in range(e):
+    u, v, w = input().split()
+    w = int(w)
+    graph.setdefault(u, []).append((v, w))
+    graph.setdefault(v, []).append((u, w))
+h = {}
+for _ in range(n):
+    node, val = input().split()
+    h[node] = int(val)
+start, goal = input().split()
+path = astar(graph, h, start, goal)
+print("Path found:", path)
+```
 
 <hr>
 <h2>Sample Graph I</h2>
@@ -114,6 +147,13 @@ E 7 <br>
 D 1 <br>
 G 0 <br>
 <hr>
+
 <h2>Sample Output</h2>
 <hr>
 Path found: ['A', 'E', 'D', 'G']
+
+## OUTPUT
+<img width="673" height="502" alt="image" src="https://github.com/user-attachments/assets/81388281-e6bb-4049-86c3-9716e1994302" />
+
+## RESULT
+Thus a graph was constructed and implemantation of A star Search for the same graph was done successfully.
